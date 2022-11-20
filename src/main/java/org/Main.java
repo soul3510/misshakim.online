@@ -221,6 +221,7 @@ public class Main {
             }
 
         });
+        killDriver();
     }
 
     public static void createDriver() throws Exception {
