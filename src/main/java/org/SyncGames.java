@@ -18,6 +18,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class SyncGames {
     public static String gridURL = "http://10.162.100.98:4444/";
@@ -223,7 +224,7 @@ public class SyncGames {
              */
             System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
             System.setProperty("webdriver.chrome.silentOutput", "true");
-//        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
+        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
             System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
             /**
              * End of Get read of selenium and chrome logs
