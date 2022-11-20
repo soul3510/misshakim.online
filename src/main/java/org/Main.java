@@ -9,7 +9,9 @@ import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.net.URL;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -22,7 +24,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 public class Main {
-
+    public static String gridURL1 = "http://3.229.185.44:4444/";
+    public static String gridURL2 = "http://23.22.57.162:4444/";
     private static WebDriver driver;
 
     public static void main(String[] args) throws Exception {
@@ -246,7 +249,8 @@ public class Main {
             LoggingPreferences logPrefs = new LoggingPreferences();
             logPrefs.enable(LogType.BROWSER, Level.INFO);
             logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
-            driver = new ChromeDriver();
+//            driver = new ChromeDriver();
+            driver = new RemoteWebDriver(new URL(randomGrid()), chromeOptions);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.manage().window().maximize();
 //        driver.get("https://www.livegames.co.il/broadcastspage.aspx");
@@ -256,6 +260,14 @@ public class Main {
             killDriver();
             throw new RuntimeException(ex);
         }
+    }
+
+    public static String randomGrid() throws Exception {
+        int r = (int) (Math.random() * 2);
+        String gridUrl = new String[]{gridURL1, gridURL2}[r];
+
+        System.out.println("Running on grid: " + gridUrl);
+        return gridUrl;
     }
 
     public static void killDriver() throws Exception {
