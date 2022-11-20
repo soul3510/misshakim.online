@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.Test;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -22,7 +23,8 @@ public class SyncGames {
     public static String gridURL = "http://10.162.100.98:4444/";
     private static WebDriver driver;
 
-    public static void syncGames() throws Exception {
+    @Test()
+    public  void syncGames() throws Exception {
 
 
         try {
