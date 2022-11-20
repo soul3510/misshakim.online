@@ -27,11 +27,17 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
 
                 try {
                     createDriver();
                 } catch (Exception e) {
+                    try {
+                        killDriver();
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                     throw new RuntimeException(e);
                 }
 
@@ -54,6 +60,11 @@ public class Main {
                 try {
                     DBHelperPrivate.mysqlConnect();
                 } catch (Exception e) {
+                    try {
+                        killDriver();
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
                     throw new RuntimeException(e);
                 }
 
@@ -71,6 +82,11 @@ public class Main {
                         DBHelperPrivate.executeUpdate("DELETE FROM `u204686394_mishakim`.`games`\n" +
                                 "WHERE date='" + date_yesterday_parsed + "';");
                     } catch (Exception e) {
+                        try {
+                            killDriver();
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         throw new RuntimeException(e);
                     }
                 }
@@ -107,7 +123,7 @@ public class Main {
                         //convert to int and increase by 1
                         int index2_i = Integer.parseInt(index2_s);
                         int index2_upgraded_by_1 = index2_i + 1;
-                        isoFormat_end = date_today_parsed + "T0" + String.valueOf(index2_upgraded_by_1);
+                        isoFormat_end = date_today_parsed + "T0" + index2_upgraded_by_1;
                     } else if (index12.equals("24")) {
                         isoFormat_end = date_tomorrow_parsed + "T" + "0100";
                     } else {
@@ -115,7 +131,7 @@ public class Main {
                         int index12_i_upgraded_by_1 = index12_i + 1;
                         isoFormat_end = date_today_parsed + "T" + index12_i_upgraded_by_1;
                     }
-                    isoFormat_end = isoFormat_end +"0000";
+                    isoFormat_end = isoFormat_end + "0000";
 
                     String game_name_trim = game.get(i).getText().replace("'", "");
 
@@ -123,6 +139,11 @@ public class Main {
                     try {
                         date_and_game_from_db = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
                     } catch (SQLException e) {
+                        try {
+                            killDriver();
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
                         throw new RuntimeException(e);
                     }
                     if (date_and_game_from_db.size() == 0) {
@@ -131,6 +152,11 @@ public class Main {
                             try {
                                 game_name_from_db = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
                             } catch (SQLException e) {
+                                try {
+                                    killDriver();
+                                } catch (Exception ex) {
+                                    throw new RuntimeException(ex);
+                                }
                                 throw new RuntimeException(e);
                             }
 
@@ -138,6 +164,11 @@ public class Main {
                                 try {
                                     Thread.sleep(3000);
                                 } catch (InterruptedException e) {
+                                    try {
+                                        killDriver();
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
                                     throw new RuntimeException(e);
                                 }
                                 System.out.println("game: " + game_name_trim + " not exists in DB table. ");
@@ -167,6 +198,11 @@ public class Main {
                                             "'" + channel.get(i).getText() + "',\n" +
                                             "'" + game_name_trim + "');");
                                 } catch (Exception e) {
+                                    try {
+                                        killDriver();
+                                    } catch (Exception ex) {
+                                        throw new RuntimeException(ex);
+                                    }
                                     throw new RuntimeException(e);
                                 }
 
@@ -185,36 +221,41 @@ public class Main {
     }
 
     public static void createDriver() throws Exception {
-        WebDriverManager.chromedriver().setup();
-        /**
-         * Get read of selenium and chrome logs
-         */
-        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-        System.setProperty("webdriver.chrome.silentOutput", "true");
+        try {
+            WebDriverManager.chromedriver().setup();
+            /**
+             * Get read of selenium and chrome logs
+             */
+            System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+            System.setProperty("webdriver.chrome.silentOutput", "true");
 //        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
-        System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
-        /**
-         * End of Get read of selenium and chrome logs
-         */
-        ChromeOptions chromeOptions = new ChromeOptions();
+            System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
+            /**
+             * End of Get read of selenium and chrome logs
+             */
+            ChromeOptions chromeOptions = new ChromeOptions();
 
-        chromeOptions.addArguments("--start-maximized");
-        chromeOptions.setCapability("platform", "WINDOWS");
-        chromeOptions.addArguments("--log-level=3");
-        chromeOptions.addArguments("--silent");
-        chromeOptions.addArguments("--no-sandbox");
-        chromeOptions.addArguments("--disable-dev-shm-usage");
-        chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--start-maximized");
+            chromeOptions.setCapability("platform", "WINDOWS");
+            chromeOptions.addArguments("--log-level=3");
+            chromeOptions.addArguments("--silent");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--headless");
 
-        LoggingPreferences logPrefs = new LoggingPreferences();
-        logPrefs.enable(LogType.BROWSER, Level.INFO);
-        logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
+            LoggingPreferences logPrefs = new LoggingPreferences();
+            logPrefs.enable(LogType.BROWSER, Level.INFO);
+            logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
+            driver = new ChromeDriver();
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().window().maximize();
 //        driver.get("https://www.livegames.co.il/broadcastspage.aspx");
-        driver.get("https://www.isramedia.net/sports-broadcasts");
-        Thread.sleep(3000);
+            driver.get("https://www.isramedia.net/sports-broadcasts");
+            Thread.sleep(3000);
+        } catch (Exception ex) {
+            killDriver();
+            throw new RuntimeException(ex);
+        }
     }
 
     public static void killDriver() throws Exception {
