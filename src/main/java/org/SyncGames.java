@@ -21,23 +21,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SyncGames {
-    public static String gridURL = "http://10.162.100.98:4444/";
+    public static String gridURL = "http://192.168.68.120:4444/";
     private static WebDriver driver;
 
     @Test()
     public  void syncGames() throws Exception {
 
-
-        try {
-            createDriver();
-        } catch (Exception e) {
-            try {
-                killDriver();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-            throw new RuntimeException(e);
-        }
+        createDriver();
 
 
         LocalDate date_today = LocalDate.now();
