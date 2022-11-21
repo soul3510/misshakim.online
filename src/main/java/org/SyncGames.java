@@ -24,8 +24,52 @@ public class SyncGames {
     public static String gridURL = "http://192.168.68.120:4444/";
     private static WebDriver driver;
 
+    public static void createDriver() throws Exception {
+        try {
+            WebDriverManager.chromedriver().setup();
+            /**
+             * Get read of selenium and chrome logs
+             */
+            System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
+            System.setProperty("webdriver.chrome.silentOutput", "true");
+            Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
+            System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
+            /**
+             * End of Get read of selenium and chrome logs
+             */
+            ChromeOptions chromeOptions = new ChromeOptions();
+
+            chromeOptions.addArguments("--start-maximized");
+            chromeOptions.setCapability("platform", "WINDOWS");
+            chromeOptions.addArguments("--log-level=3");
+            chromeOptions.addArguments("--silent");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--headless");
+
+            LoggingPreferences logPrefs = new LoggingPreferences();
+            logPrefs.enable(LogType.BROWSER, Level.INFO);
+            logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
+//            driver = new ChromeDriver();
+            driver = new RemoteWebDriver(new URL(gridURL), chromeOptions);
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().window().maximize();
+//        driver.get("https://www.livegames.co.il/broadcastspage.aspx");
+            driver.get("https://www.isramedia.net/sports-broadcasts");
+            Thread.sleep(3000);
+        } catch (Exception ex) {
+            killDriver();
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void killDriver() throws Exception {
+        driver.close();
+        driver.quit();
+    }
+
     @Test()
-    public  void syncGames() throws Exception {
+    public void syncGames() throws Exception {
 
         createDriver();
 
@@ -167,7 +211,6 @@ public class SyncGames {
                         System.out.println("game: " + game_name_trim);
 
                         LocalDate date = LocalDate.now();
-
                         try {
                             DBHelperPrivate.executeUpdate("INSERT INTO `u204686394_mishakim`.`games`\n" +
                                     "(\n" +
@@ -176,7 +219,8 @@ public class SyncGames {
                                     "`isoFormat_end`,\n" +
                                     "`time`,\n" +
                                     "`channel`,\n" +
-                                    "`game_name`)\n" +
+                                    "`game_name`,\n" +
+                                    "`color`)\n" +
                                     "VALUES\n" +
                                     "(\n" +
                                     "'" + date + "',\n" +
@@ -184,7 +228,8 @@ public class SyncGames {
                                     "'" + isoFormat_end + "',\n" +
                                     "'" + time.get(i).getText() + "',\n" +
                                     "'" + channel.get(i).getText() + "',\n" +
-                                    "'" + game_name_trim + "');");
+                                    "'" + game_name_trim + "',\n" +
+                                    "'" + channelColor(channel.get(i).getText()) + "');");
                         } catch (Exception e) {
                             try {
                                 killDriver();
@@ -206,47 +251,34 @@ public class SyncGames {
         killDriver();
     }
 
-    public static void createDriver() throws Exception {
-        try {
-            WebDriverManager.chromedriver().setup();
-            /**
-             * Get read of selenium and chrome logs
-             */
-            System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
-            System.setProperty("webdriver.chrome.silentOutput", "true");
-        Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
-            System.setProperty(ChromeDriverService.CHROME_DRIVER_SILENT_OUTPUT_PROPERTY, "true");
-            /**
-             * End of Get read of selenium and chrome logs
-             */
-            ChromeOptions chromeOptions = new ChromeOptions();
 
-            chromeOptions.addArguments("--start-maximized");
-            chromeOptions.setCapability("platform", "WINDOWS");
-            chromeOptions.addArguments("--log-level=3");
-            chromeOptions.addArguments("--silent");
-            chromeOptions.addArguments("--no-sandbox");
-            chromeOptions.addArguments("--disable-dev-shm-usage");
-            chromeOptions.addArguments("--headless");
+    public String channelColor(String channel) {
+        String color;
+        switch (channel) {
+            case "ספורט 5":
+                color = "blue";
+                break;
+            case "ספורט 1":
+                color = "yellow";
+                break;
+            case "ספורט 5+ לייב":
+                color = "IndianRed";
+                break;
+            case "כאן 11":
+                color = "LightSalmon";
+                break;
+            case "ספורט 5+":
+                color = "LightSalmon";
+                break;
+            case "5 סטארס":
+                color = "Lime";
+                break;
 
-            LoggingPreferences logPrefs = new LoggingPreferences();
-            logPrefs.enable(LogType.BROWSER, Level.INFO);
-            logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
-//            driver = new ChromeDriver();
-            driver = new RemoteWebDriver(new URL(gridURL), chromeOptions);
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.manage().window().maximize();
-//        driver.get("https://www.livegames.co.il/broadcastspage.aspx");
-            driver.get("https://www.isramedia.net/sports-broadcasts");
-            Thread.sleep(3000);
-        } catch (Exception ex) {
-            killDriver();
-            throw new RuntimeException(ex);
+
+            default:
+                color = "Fuchsia";
+                break;
         }
-    }
-
-    public static void killDriver() throws Exception {
-        driver.close();
-        driver.quit();
+        return color;
     }
 }
