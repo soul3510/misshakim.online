@@ -10,13 +10,16 @@ public class DBHelperPrivate {
 
     public static Connection mysqlConnect() throws Exception {
         try {
-//            String url = "jdbc:mysql://fdb30.awardspace.net:3306/4213909_mishakim?useSSL=false&allowLoadLocalInfile=true";
-//            String user = "4213909_mishakim";
-//            String password = "fX%J#f9{1v]+x^cV";
 
-            String url = "jdbc:mysql://191.96.56.154:3306/u204686394_mishakim?useSSL=false&allowLoadLocalInfile=true";
-            String user = "u204686394_mishakim";
-            String password = "Mishakim!@#$11";
+            //LOCAL
+            String url = "jdbc:mysql://127.0.0.1:3306/mishakim?useSSL=false&allowLoadLocalInfile=true";
+            String user = "root";
+            String password = "root";
+
+//            //REMOTE
+//            String url = "jdbc:mysql://191.96.56.154:3306/u204686394_mishakim?useSSL=false&allowLoadLocalInfile=true";
+//            String user = "u204686394_mishakim";
+//            String password = "Mishakim!@#$11";
 
 
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();

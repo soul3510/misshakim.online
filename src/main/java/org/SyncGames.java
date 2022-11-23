@@ -22,7 +22,15 @@ import java.util.logging.Logger;
 
 public class SyncGames {
     public static String gridURL = "http://192.168.68.120:4444/";
+
+
+    public static String db = "mishakim"; //LOCAL
+//    public static String db = "u204686394_mishakim"; //REMOTE
+
+    public static String table = "games";
+
     private static WebDriver driver;
+
 
     public static void createDriver() throws Exception {
         try {
@@ -73,10 +81,13 @@ public class SyncGames {
 
         createDriver();
 
-
         LocalDate date_today = LocalDate.now();
-        DateTimeFormatter formatters_today = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        DateTimeFormatter formatters_today = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         String date_today_parsed_to_use_in_db = date_today.format(formatters_today);
+
+//        LocalDate date_today = LocalDate.now();
+//        DateTimeFormatter formatters_today = DateTimeFormatter.ofPattern("yyy-MM-dd");
+//        String date_today_parsed_to_use_in_db = date_today.format(formatters_today);
 
 
         LocalDate date_yesterday = LocalDate.now().minusDays(1);
@@ -99,30 +110,6 @@ public class SyncGames {
             }
             throw new RuntimeException(e);
         }
-
-//        /**
-//         * First parsedDate old dates from DB
-//         */
-//        List<String> old_games;
-//        try {
-//            old_games = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where date = '" + date_yesterday_parsed + "'", "id");
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//        if (old_games.size() != 0) {
-//            try {
-//                DBHelperPrivate.executeUpdate("DELETE FROM `u204686394_mishakim`.`games`\n" +
-//                        "WHERE date='" + date_yesterday_parsed + "';");
-//            } catch (Exception e) {
-//                try {
-//                    killDriver();
-//                } catch (Exception ex) {
-//                    throw new RuntimeException(ex);
-//                }
-//                throw new RuntimeException(e);
-//            }
-//        }
-
 
         //Delete all data in table before start
         DBHelperPrivate.executeUpdate("DELETE from games");
@@ -172,7 +159,7 @@ public class SyncGames {
 
             List<String> date_and_game_from_db = null;
             try {
-                date_and_game_from_db = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
+                date_and_game_from_db = DBHelperPrivate.executeSelectQuery("Select * from "+db+".games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
             } catch (SQLException e) {
                 try {
                     killDriver();
@@ -185,7 +172,7 @@ public class SyncGames {
                 {
                     List<String> game_name_from_db = null;
                     try {
-                        game_name_from_db = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
+                        game_name_from_db = DBHelperPrivate.executeSelectQuery("Select * from "+db+".games where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
                     } catch (SQLException e) {
                         try {
                             killDriver();
@@ -213,9 +200,8 @@ public class SyncGames {
                         System.out.println("time: " + time.get(i).getText());
                         System.out.println("game: " + game_name_trim);
 
-                        LocalDate date = LocalDate.now();
                         try {
-                            DBHelperPrivate.executeUpdate("INSERT INTO `u204686394_mishakim`.`games`\n" +
+                            DBHelperPrivate.executeUpdate("INSERT INTO `"+db+"`.`games`\n" +
                                     "(\n" +
                                     "`date`,\n" +
                                     "`isoFormat`,\n" +
@@ -226,7 +212,7 @@ public class SyncGames {
                                     "`color`)\n" +
                                     "VALUES\n" +
                                     "(\n" +
-                                    "'" + date + "',\n" +
+                                    "'" + date_today_parsed_to_use_in_db + "',\n" +
                                     "'" + isoFormat + "',\n" +
                                     "'" + isoFormat_end + "',\n" +
                                     "'" + time.get(i).getText() + "',\n" +
