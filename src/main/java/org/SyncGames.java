@@ -100,29 +100,32 @@ public class SyncGames {
             throw new RuntimeException(e);
         }
 
-        /**
-         * First parsedDate old dates from DB
-         */
-        List<String> old_games;
-        try {
-            old_games = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where date = '" + date_yesterday_parsed + "'", "id");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (old_games.size() != 0) {
-            try {
-                DBHelperPrivate.executeUpdate("DELETE FROM `u204686394_mishakim`.`games`\n" +
-                        "WHERE date='" + date_yesterday_parsed + "';");
-            } catch (Exception e) {
-                try {
-                    killDriver();
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
-                throw new RuntimeException(e);
-            }
-        }
+//        /**
+//         * First parsedDate old dates from DB
+//         */
+//        List<String> old_games;
+//        try {
+//            old_games = DBHelperPrivate.executeSelectQuery("Select * from u204686394_mishakim.games where date = '" + date_yesterday_parsed + "'", "id");
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
+//        if (old_games.size() != 0) {
+//            try {
+//                DBHelperPrivate.executeUpdate("DELETE FROM `u204686394_mishakim`.`games`\n" +
+//                        "WHERE date='" + date_yesterday_parsed + "';");
+//            } catch (Exception e) {
+//                try {
+//                    killDriver();
+//                } catch (Exception ex) {
+//                    throw new RuntimeException(ex);
+//                }
+//                throw new RuntimeException(e);
+//            }
+//        }
 
+
+        //Delete all data in table before start
+        DBHelperPrivate.executeUpdate("DELETE from games");
 
         List<WebElement> channel = driver.findElements(By.xpath("//li[@class='channelname']"));
         List<WebElement> time = driver.findElements(By.xpath("//li[@class='time']"));
