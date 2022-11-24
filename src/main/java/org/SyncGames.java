@@ -82,7 +82,7 @@ public class SyncGames {
         createDriver();
 
         LocalDate date_today = LocalDate.now();
-        DateTimeFormatter formatters_today = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        DateTimeFormatter formatters_today = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String date_today_parsed_to_use_in_db = date_today.format(formatters_today);
 
 //        LocalDate date_today = LocalDate.now();
