@@ -5,24 +5,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.SyncGames.db;
+
 public class DBHelperPrivate {
     protected static Connection conn = null;
 
     public static Connection mysqlConnect() throws Exception {
         try {
 
-            //LOCAL
-            String url = "jdbc:mysql://127.0.0.1:3306/mishakim?useSSL=false&allowLoadLocalInfile=true";
-            String user = "root";
-            String password = "root";
-
+            String url = null;
+            String user = null;
+            String password = null;
+            if (db.equals("mishakim")) {
+                //LOCAL
+                url = "jdbc:mysql://127.0.0.1:3306/mishakim?useSSL=false&allowLoadLocalInfile=true";
+                user = "root";
+                password = "root";
+            } else if (db.equals("u204686394_mishakim")) {
 //            //REMOTE
-//            String url = "jdbc:mysql://191.96.56.154:3306/u204686394_mishakim?useSSL=false&allowLoadLocalInfile=true";
-//            String user = "u204686394_mishakim";
-//            String password = "Mishakim!@#$11";
+                url = "jdbc:mysql://191.96.56.154:3306/u204686394_mishakim?useSSL=false&allowLoadLocalInfile=true";
+                user = "u204686394_mishakim";
+                password = "Mishakim!@#$11";
+
+            }
 
 
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+
             conn = DriverManager.getConnection(url, user, password);
         } catch (Exception e) {
             throw new Exception("Not connected to DB: " + e);
@@ -32,7 +41,7 @@ public class DBHelperPrivate {
 
 
     public static List<String> executeSelectQuery(String selectQuery, String columnLabel) throws SQLException {
-        System.out.println("\nDB query: "+selectQuery+":\n");
+        System.out.println("\nDB query: " + selectQuery + ":\n");
         List lines;
         List lines_comp = new ArrayList();
         try {
@@ -51,7 +60,7 @@ public class DBHelperPrivate {
         }
         if (selectQuery.contains("*")) {
             System.out.println("(For column: " + columnLabel + ")");
-        }else {
+        } else {
             System.out.println("\n");
         }
         return lines_comp;

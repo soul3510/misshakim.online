@@ -24,8 +24,8 @@ public class SyncGames {
     public static String gridURL = "http://192.168.68.120:4444/";
 
 
-    public static String db = "mishakim"; //LOCAL
-//    public static String db = "u204686394_mishakim"; //REMOTE
+//    public static String db = "mishakim"; //LOCAL
+    public static String db = "u204686394_mishakim"; //REMOTE
 
     public static String table = "games";
 
