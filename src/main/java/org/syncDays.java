@@ -20,10 +20,10 @@ public class syncDays extends TestBase {
     @DataProvider(name = "pageIndex")
     public Object[][] pageIndex() {
         return new Object[][]{
-                {"0"},
-                {"1"},
+//                {"0"},
+//                {"1"},
                 {"2"},
-                {"3"},
+//                {"3"},
         };
     }
 
@@ -186,7 +186,7 @@ public class syncDays extends TestBase {
             }
             isoFormat_end = isoFormat_end + "0000";
 
-            String game_name_trim = game.get(i).getText().replace("'", "");
+            String game_name_trim = game.get(i).getText().replace("'", "").replace("\"", "");
 
             List<String> date_and_game_from_db = null;
             try {
