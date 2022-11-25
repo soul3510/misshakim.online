@@ -3,12 +3,15 @@ package org;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static org.SyncGames.db;
 
 public class DBHelperPrivate {
     protected static Connection conn = null;
+
+
+    //public static String db = "mishakim"; //LOCAL
+    private static String db = "u204686394_mishakim"; //REMOTE
+
 
     public static Connection mysqlConnect() throws Exception {
         try {
