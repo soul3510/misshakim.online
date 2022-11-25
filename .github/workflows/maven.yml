@@ -1,23 +1,17 @@
-name: misshakim.onlime build
+name: Java CI
 
-on:
-  workflow_dispatch:
-#   schedule:
-#   - cron: "00 07,09 * * *"  
-# env:
-#   TZ: "IST"
-  
+on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: find-games-and-update-db
+
     steps:
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@v2.0.0
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
         with:
+          java-version: '11'
           distribution: 'adopt'
-          java-version: '8'
-
       - name: Build with Maven
-        run: mvn -B package --file pom.xml
+        run: mvn --batch-mode --update-snapshots package
