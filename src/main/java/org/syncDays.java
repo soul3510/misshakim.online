@@ -143,9 +143,23 @@ public class syncDays extends TestBase {
             String time_formatted = time.get(i).getText().replace(":", "");
 
             //Combine to ISO format
-            String pageDateOnlyDateOppositeYear = pageDateOnlyDate.replace("/", "").substring(4);
-            String pageDateOnlyDateOppositeMonth = pageDateOnlyDate.replace("/", "").substring(2, 4);
-            String pageDateOnlyDateOppositeDay = pageDateOnlyDate.replace("/", "").substring(0, 2);
+
+            String pageDateOnlyDateOppositeYear = null;
+            String pageDateOnlyDateOppositeMonth = null;
+            String pageDateOnlyDateOppositeDay = null;
+            if (pageDateOnlyDate.length() == 10) {
+
+                pageDateOnlyDateOppositeYear = pageDateOnlyDate.replace("/", "").substring(4);
+                pageDateOnlyDateOppositeMonth = pageDateOnlyDate.replace("/", "").substring(2, 4);
+                pageDateOnlyDateOppositeDay = pageDateOnlyDate.replace("/", "").substring(0, 2);
+
+            } else if (pageDateOnlyDate.length() == 9) {
+                //TODO: if date from page come as 1/12/2022 - need to get length of this date and if its 9 instead of 10 (01/12/2022)
+
+                pageDateOnlyDateOppositeYear = pageDateOnlyDate.replace("/", "").substring(3);
+                pageDateOnlyDateOppositeMonth = pageDateOnlyDate.replace("/", "").substring(1, 3);
+                pageDateOnlyDateOppositeDay = pageDateOnlyDate.replace("/", "").substring(0, 1);
+            }
 
             String completeDate = pageDateOnlyDateOppositeYear + pageDateOnlyDateOppositeMonth + pageDateOnlyDateOppositeDay;
             String isoFormat = completeDate + "T" + time_formatted + "00";
