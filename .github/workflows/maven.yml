@@ -2,8 +2,8 @@ name: misshakim.onlime build
 
 on:
   workflow_dispatch:
-# schedule:
-# - cron: "00 07,09 * * *"  
+  schedule:
+  - cron: "00 07,09 * * *"  
 env:
   TZ: "IST"
   
