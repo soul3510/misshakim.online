@@ -73,7 +73,7 @@ public class syncDays extends TestBase {
 
 
         LocalDate date_tomorrow = LocalDate.now().plusDays(Long.parseLong(pageIndex));
-        DateTimeFormatter formatters_tomm = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        DateTimeFormatter formatters_tomm = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String date_tomorrow_parsed = date_tomorrow.format(formatters_tomm);
 
         DBHelperPrivate.mysqlConnect();
@@ -166,7 +166,7 @@ public class syncDays extends TestBase {
 
             List<String> date_and_game_from_db = null;
             try {
-                date_and_game_from_db = DBHelperPrivate.executeSelectQuery("Select * from " + db + "." + dbDayToUse + " where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
+                date_and_game_from_db = DBHelperPrivate.executeSelectQuery("Select * from " + db + "." + dbDayToUse + " where game_name = '" + game_name_trim + "' and date = '" + date_tomorrow_parsed + "'", "game_name");
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
@@ -174,7 +174,7 @@ public class syncDays extends TestBase {
                 {
                     List<String> game_name_from_db = null;
                     try {
-                        game_name_from_db = DBHelperPrivate.executeSelectQuery("Select * from " + db + "." + dbDayToUse + " where game_name = '" + game_name_trim + "' and date = '" + date_today_parsed_to_use_in_db + "'", "game_name");
+                        game_name_from_db = DBHelperPrivate.executeSelectQuery("Select * from " + db + "." + dbDayToUse + " where game_name = '" + game_name_trim + "' and date = '" + date_tomorrow_parsed + "'", "game_name");
                     } catch (SQLException e) {
                         throw new RuntimeException(e);
                     }
@@ -187,7 +187,7 @@ public class syncDays extends TestBase {
                         }
                         System.out.println("game: " + game_name_trim + " not exists in DB table. ");
 
-                        System.out.println("date: " + date_today_parsed_to_use_in_db);
+                        System.out.println("date: " + date_tomorrow_parsed);
                         System.out.println("channel: " + channelAttributes.get(i));
                         System.out.println("time: " + time.get(i).getText());
                         System.out.println("game: " + game_name_trim);
@@ -204,7 +204,7 @@ public class syncDays extends TestBase {
                                     "`color`)\n" +
                                     "VALUES\n" +
                                     "(\n" +
-                                    "'" + date_today_parsed_to_use_in_db + "',\n" +
+                                    "'" + date_tomorrow_parsed + "',\n" +
                                     "'" + isoFormat + "',\n" +
                                     "'" + isoFormat_end + "',\n" +
                                     "'" + time.get(i).getText() + "',\n" +
