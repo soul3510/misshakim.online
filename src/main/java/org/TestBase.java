@@ -19,6 +19,7 @@ public class TestBase {
 
     private static String gridURL = "http://192.168.68.120:4444/";
 //    private static String gridURL = "http://192.168.68.115:4444/"; //old
+//    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
 
 
     //    public static String db = "mishakim"; //LOCAL
