@@ -1,4 +1,4 @@
-name: Java CI
+name: mishakim-live.com
 
 on: 
  workflow_dispatch:
