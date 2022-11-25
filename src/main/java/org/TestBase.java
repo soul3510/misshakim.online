@@ -50,16 +50,16 @@ public class TestBase {
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
-//            chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--headless");
 
             LoggingPreferences logPrefs = new LoggingPreferences();
             logPrefs.enable(LogType.BROWSER, Level.INFO);
             logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
 //            driver = new ChromeDriver();
             driver = new RemoteWebDriver(new URL(gridURL), chromeOptions);
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
             driver.manage().window().maximize();
-            Thread.sleep(3000);
+//            Thread.sleep(3000);
         } catch (Exception ex) {
             killDriver();
             throw new RuntimeException(ex);

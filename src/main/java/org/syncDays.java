@@ -7,9 +7,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class syncDays extends TestBase {
@@ -31,6 +33,9 @@ public class syncDays extends TestBase {
 
         //First get the day on screen:
         String pageDate = driver.findElement(By.xpath("//span[@data-font-size='20']")).getText();
+
+        String pageDateOnlyDate = pageDate.substring(8);
+
 
         String dbDayToUse = null;
         if (pageDate.contains("א'")) {
@@ -138,7 +143,12 @@ public class syncDays extends TestBase {
             String time_formatted = time.get(i).getText().replace(":", "");
 
             //Combine to ISO format
-            String isoFormat = date_today_parsed + "T" + time_formatted + "00";
+            String pageDateOnlyDateOppositeYear = pageDateOnlyDate.replace("/", "").substring(4);
+            String pageDateOnlyDateOppositeMonth = pageDateOnlyDate.replace("/", "").substring(2, 4);
+            String pageDateOnlyDateOppositeDay = pageDateOnlyDate.replace("/", "").substring(0, 2);
+
+            String completeDate = pageDateOnlyDateOppositeYear + pageDateOnlyDateOppositeMonth + pageDateOnlyDateOppositeDay;
+            String isoFormat = completeDate + "T" + time_formatted + "00";
 
             //Get HH from combined string (index: 9 + 10)
             char index1 = isoFormat.charAt(9);
@@ -152,13 +162,13 @@ public class syncDays extends TestBase {
                 //convert to int and increase by 1
                 int index2_i = Integer.parseInt(index2_s);
                 int index2_upgraded_by_1 = index2_i + 1;
-                isoFormat_end = date_today_parsed + "T0" + index2_upgraded_by_1;
+                isoFormat_end = completeDate + "T0" + index2_upgraded_by_1;
             } else if (index12.equals("24")) {
-                isoFormat_end = date_tomorrow_parsed + "T" + "0100";
+                isoFormat_end = completeDate + "T" + "0100";
             } else {
                 int index12_i = Integer.parseInt(index1_s + index2_s);
                 int index12_i_upgraded_by_1 = index12_i + 1;
-                isoFormat_end = date_today_parsed + "T" + index12_i_upgraded_by_1;
+                isoFormat_end = completeDate + "T" + index12_i_upgraded_by_1;
             }
             isoFormat_end = isoFormat_end + "0000";
 
@@ -204,7 +214,7 @@ public class syncDays extends TestBase {
                                     "`color`)\n" +
                                     "VALUES\n" +
                                     "(\n" +
-                                    "'" + date_tomorrow_parsed + "',\n" +
+                                    "'" + pageDateOnlyDate + "',\n" +
                                     "'" + isoFormat + "',\n" +
                                     "'" + isoFormat_end + "',\n" +
                                     "'" + time.get(i).getText() + "',\n" +
