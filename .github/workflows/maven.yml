@@ -4,8 +4,8 @@ on:
   workflow_dispatch:
   schedule:
   - cron: "00 07,09 * * *"  
-env:
-  TZ: "IST"
+# env:
+#   TZ: "IST"
   
 jobs:
   build:
