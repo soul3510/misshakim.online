@@ -2,8 +2,8 @@ name: misshakim.onlime build
 
 on:
   workflow_dispatch:
-  schedule:
-  - cron: "00 07,09 * * *"  
+# schedule:
+# - cron: "00 07,09 * * *"  
 env:
   TZ: "IST"
   
@@ -23,6 +23,10 @@ jobs:
         run: mvn -B package --file pom.xml
 
 
+  send-email:
+    runs-on: self-hosted
+    name: send-email
+    steps:
       - name: Send mail
         if: always()
         uses: dawidd6/action-send-mail@v2
@@ -41,19 +45,3 @@ jobs:
           to: soul3510@gmail.commisshakim.onlinme delpoy
           # from email name
           from: Eyal Sooliman
-
-  test-date:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Test schedule
-        if: github.event_name == 'schedule'
-        run: |
-          now=$(date +%s)
-          local_time=$(date -d "$LOCAL_TIME" +%s)
-
-          if [[ $now -gt $local_time && $now -lt "$((local_time + 3600))" ]]; then
-              echo "🌞 Passed daylight savings time check!"
-          else    
-              echo "⏱ Waiting until $LOCAL_TIME."
-              exit 1
-          fi
