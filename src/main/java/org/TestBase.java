@@ -24,8 +24,8 @@ public class TestBase {
     public static WebDriver driver;
 
 //    private static String table = "games";
-        private static String gridURL = "http://10.162.10.197:4444/";//new computer (IP not static
-//    private static final String gridURL = "http://192.168.68.115:4444/"; //old octopai computer
+//        private static String gridURL = "http://10.162.10.197:4444/";//new computer (IP not static
+    private static final String gridURL = "http://192.168.68.115:4444/"; //old octopai computer
 //    private static final String gridURL = "http://3.229.185:4444/"; //work
 
     @BeforeSuite
