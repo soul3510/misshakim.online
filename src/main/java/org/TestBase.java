@@ -9,6 +9,7 @@ import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeSuite;
 
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -17,24 +18,19 @@ import java.util.logging.Logger;
 
 public class TestBase {
 
-//    private static String gridURL = "http://192.168.68.120:4444/";
-    private static String gridURL = "http://192.168.68.115:4444/"; //old
-//    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
-
-
     //    public static String db = "mishakim"; //LOCAL
     public static String db = "u204686394_mishakim"; //REMOTE
-
-//    private static String table = "games";
-
+//    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
     public static WebDriver driver;
 
+//    private static String table = "games";
+        private static String gridURL = "http://10.162.10.197:4444/";//new computer (IP not static
+//    private static final String gridURL = "http://192.168.68.115:4444/"; //old octopai computer
+//    private static final String gridURL = "http://3.229.185:4444/"; //work
 
-    @BeforeMethod
-    public static void createDriver() throws Exception {
-        try {
-
-            DBHelperPrivate.mysqlConnect();
+    @BeforeSuite
+    public static void deleteDbs() throws Exception {
+                    DBHelperPrivate.mysqlConnect();
 
 
             //Delete all data in table before start
@@ -49,8 +45,11 @@ public class TestBase {
 
             DBHelperPrivate.mysqlConnectDisconnect();
 
+    }
 
-
+    @BeforeMethod
+    public static void createDriver() throws Exception {
+        try {
             WebDriverManager.chromedriver().setup();
             /**
              * Get read of selenium and chrome logs
