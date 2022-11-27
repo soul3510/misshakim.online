@@ -33,6 +33,24 @@ public class TestBase {
     @BeforeMethod
     public static void createDriver() throws Exception {
         try {
+
+            DBHelperPrivate.mysqlConnect();
+
+
+            //Delete all data in table before start
+//        DBHelperPrivate.executeUpdate("DELETE from " + dbDayToUse);
+            DBHelperPrivate.executeUpdate("DELETE from sunday");
+            DBHelperPrivate.executeUpdate("DELETE from monday");
+            DBHelperPrivate.executeUpdate("DELETE from tuesday");
+            DBHelperPrivate.executeUpdate("DELETE from wednesday");
+            DBHelperPrivate.executeUpdate("DELETE from thursday");
+            DBHelperPrivate.executeUpdate("DELETE from friday");
+            DBHelperPrivate.executeUpdate("DELETE from saturday");
+
+            DBHelperPrivate.mysqlConnectDisconnect();
+
+
+
             WebDriverManager.chromedriver().setup();
             /**
              * Get read of selenium and chrome logs
