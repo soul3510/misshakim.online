@@ -83,21 +83,6 @@ public class syncDays extends TestBase {
 
         DBHelperPrivate.mysqlConnect();
 
-//        DBHelperPrivate.mysqlConnect();
-
-//
-//        //Delete all data in table before start
-//        DBHelperPrivate.executeUpdate("DELETE from " + dbDayToUse);
-////        DBHelperPrivate.executeUpdate("DELETE from sunday");
-////        DBHelperPrivate.executeUpdate("DELETE from monday");
-////        DBHelperPrivate.executeUpdate("DELETE from tuesday");
-////        DBHelperPrivate.executeUpdate("DELETE from wednesday");
-////        DBHelperPrivate.executeUpdate("DELETE from thursday");
-////        DBHelperPrivate.executeUpdate("DELETE from friday");
-////        DBHelperPrivate.executeUpdate("DELETE from saturday");
-//
-////        DBHelperPrivate.mysqlConnectDisconnect();
-
 
 
         List<WebElement> game = driver.findElements(By.xpath("//td[@class='name']"));
@@ -187,7 +172,7 @@ public class syncDays extends TestBase {
             String index2_s = "" + index2;
 
             String index12 = index1_s + index2_s;
-
+            int index12_i_upgraded_by_1 = 0;
             if (index1_s.equals("0")) {
                 //convert to int and increase by 1
                 int index2_i = Integer.parseInt(index2_s);
@@ -197,7 +182,7 @@ public class syncDays extends TestBase {
                 isoFormat_end = completeDate + "T" + "0100";
             } else {
                 int index12_i = Integer.parseInt(index1_s + index2_s);
-                int index12_i_upgraded_by_1 = index12_i + 1;
+                index12_i_upgraded_by_1 = index12_i + 1;
                 isoFormat_end = completeDate + "T" + index12_i_upgraded_by_1;
             }
             isoFormat_end = isoFormat_end + "0000";
@@ -241,7 +226,8 @@ public class syncDays extends TestBase {
                                     "`time`,\n" +
                                     "`channel`,\n" +
                                     "`game_name`,\n" +
-                                    "`color`)\n" +
+                                    "`color`,\n" +
+                                    "`time_end`)\n" +
                                     "VALUES\n" +
                                     "(\n" +
                                     "'" + pageDateOnlyDate + "',\n" +
@@ -250,7 +236,8 @@ public class syncDays extends TestBase {
                                     "'" + time.get(i).getText() + "',\n" +
                                     "'" + channelAttributes.get(i) + "',\n" +
                                     "'" + game_name_trim + "',\n" +
-                                    "'" + channelColor(channelAttributes.get(i)) + "');");
+                                    "'" + channelColor(channelAttributes.get(i)) + "',\n" +
+                                    "'" + index12_i_upgraded_by_1 + ":00');");
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }
