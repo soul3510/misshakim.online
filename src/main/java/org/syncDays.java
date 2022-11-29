@@ -20,10 +20,10 @@ public class syncDays extends TestBase {
     @DataProvider(name = "pageIndex")
     public Object[][] pageIndex() {
         return new Object[][]{
-                {"0"},
-                {"1"},
+//                {"0"},
+//                {"1"},
                 {"2"},
-                {"3"},
+//                {"3"},
         };
     }
 
@@ -126,6 +126,9 @@ public class syncDays extends TestBase {
                     if (checkImgExists.contains("mobile_43c0b2a9dc18402aea3e335c80794b12.png")) {
                         channelAttributes.add("רשת 13");
                     }
+                    if (checkImgExists.contains("mobile_2cefb86920bc865962f288a340e0aff9.png")) {
+                        channelAttributes.add("ספורט 2");
+                    }
                 } else {
                     channelAttributes.add(checkImgExists);
                 }
@@ -213,7 +216,11 @@ public class syncDays extends TestBase {
                         System.out.println("game: " + game_name_trim + " not exists in DB table. ");
 
                         System.out.println("date: " + date_tomorrow_parsed);
-                        System.out.println("channel: " + channelAttributes.get(i));
+                        try {
+                            System.out.println("channel: " + channelAttributes.get(i));
+                        }catch (Exception e){
+                            throw new Exception("if got exception out of bounds - meaning that a channel is missing at starting line 102");
+                        }
                         System.out.println("time: " + time.get(i).getText());
                         System.out.println("game: " + game_name_trim);
 

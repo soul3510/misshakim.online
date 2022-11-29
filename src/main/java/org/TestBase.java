@@ -35,6 +35,8 @@ public class TestBase {
 
             //Delete all data in table before start
 //        DBHelperPrivate.executeUpdate("DELETE from " + dbDayToUse);
+
+
             DBHelperPrivate.executeUpdate("DELETE from sunday");
             DBHelperPrivate.executeUpdate("DELETE from monday");
             DBHelperPrivate.executeUpdate("DELETE from tuesday");
@@ -69,7 +71,7 @@ public class TestBase {
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
-            chromeOptions.addArguments("--headless");
+//            chromeOptions.addArguments("--headless");
 
             LoggingPreferences logPrefs = new LoggingPreferences();
             logPrefs.enable(LogType.BROWSER, Level.INFO);
