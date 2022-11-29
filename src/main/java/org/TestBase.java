@@ -71,7 +71,7 @@ public class TestBase {
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
-//            chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--headless");
 
             LoggingPreferences logPrefs = new LoggingPreferences();
             logPrefs.enable(LogType.BROWSER, Level.INFO);
