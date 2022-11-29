@@ -20,10 +20,10 @@ public class syncDays extends TestBase {
     @DataProvider(name = "pageIndex")
     public Object[][] pageIndex() {
         return new Object[][]{
-//                {"0"},
-//                {"1"},
+                {"0"},
+                {"1"},
                 {"2"},
-//                {"3"},
+                {"3"},
         };
     }
 
