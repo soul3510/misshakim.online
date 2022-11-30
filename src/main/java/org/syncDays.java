@@ -129,6 +129,9 @@ public class syncDays extends TestBase {
                     if (checkImgExists.contains("mobile_2cefb86920bc865962f288a340e0aff9.png")) {
                         channelAttributes.add("ספורט 2");
                     }
+                    if (checkImgExists.contains("mobile_43c0b2a9dc18402aea3e335c80794b12.png")) {
+                        channelAttributes.add("רשת 13");
+                    }
                 } else {
                     channelAttributes.add(checkImgExists);
                 }
