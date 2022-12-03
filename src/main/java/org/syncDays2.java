@@ -7,12 +7,15 @@ import org.testng.annotations.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class syncDays2 extends TestBase2 {
 
+    private String completeDate;
 
     public static Date convertStringToDate(String time) throws Exception {
         SimpleDateFormat formatter5 = new SimpleDateFormat("HH:mm");
@@ -115,6 +118,11 @@ public class syncDays2 extends TestBase2 {
             String game_name_trim = games.get(i).getText().replace("'", "").replace("\"", "");
 
 
+            //Convert date to ISO format for web:
+            String isoFormat_start = getIsoFormat_start( pageDateIncreased2, times.get(i).getText());
+            String isoFormat_end = getIsoFormat_end(isoFormat_start);
+
+
             //First see if record already saved:
             try {
                 List<String> id = DBHelperPrivate.executeSelectQuery("SELECT * FROM `u204686394_mishakim`.`games` where game_name = '" + game_name_trim + "' and game_date = '" + pageDateIncreased2 + "' and time = '" + times.get(i).getText() + "'", "id");
@@ -131,7 +139,9 @@ public class syncDays2 extends TestBase2 {
                             "`channel`,\n" +
                             "`game_name`,\n" +
                             "`color`,\n" +
-                            "`day`)\n" +
+                            "`day`,\n" +
+                            "`isoFormat_start`,\n" +
+                            "`isoFormat_end`)\n" +
                             "VALUES\n" +
                             "(\n" +
                             "'" + pageDateIncreased2 + "',\n" +
@@ -141,7 +151,9 @@ public class syncDays2 extends TestBase2 {
                             "'" + channels.get(i).getText() + "',\n" +
                             "'" + game_name_trim + "',\n" +
                             "'white',\n" +
-                            "'" + day + "');");
+                            "'" + day + "',\n" +
+                            "'" + isoFormat_start + "',\n" +
+                            "'" + isoFormat_end + "');");
 
                 }
                 System.out.println("Record already exists");
@@ -193,4 +205,60 @@ public class syncDays2 extends TestBase2 {
         return current;
     }
 
+    public String getIsoFormat_start(String game_date, String time) throws ParseException {
+        //Need to be like this: 20221203T19000000
+
+        String pageDateOnlyDateOppositeYear = null;
+        String pageDateOnlyDateOppositeMonth = null;
+        String pageDateOnlyDateOppositeDay = null;
+        if (game_date.length() == 10) {
+
+            pageDateOnlyDateOppositeYear = game_date.replace("/", "").substring(4);
+            pageDateOnlyDateOppositeMonth = game_date.replace("/", "").substring(2, 4);
+            pageDateOnlyDateOppositeDay = game_date.replace("/", "").substring(0, 2);
+
+        } else if (game_date.length() == 9) {
+            //TODO: if date from page come as 1/12/2022 - need to get length of this date and if its 9 instead of 10 (01/12/2022)
+
+            pageDateOnlyDateOppositeYear = game_date.replace("/", "").substring(3);
+            pageDateOnlyDateOppositeMonth = game_date.replace("/", "").substring(1, 3);
+            pageDateOnlyDateOppositeDay = game_date.replace("/", "").substring(0, 1);
+        }
+
+        completeDate = pageDateOnlyDateOppositeYear + pageDateOnlyDateOppositeMonth + pageDateOnlyDateOppositeDay;
+
+
+        //Remove ":" from time
+        String time_formatted = time.replace(":", "");
+        String isoFormat = completeDate + "T" + time_formatted + "0000";
+        return isoFormat;
+    }
+
+
+    public String getIsoFormat_end(String isoFormat_start) throws ParseException {
+
+        //Get HH from combined string (index: 9 + 10)
+        char index1 = isoFormat_start.charAt(9);
+        char index2 = isoFormat_start.charAt(10);
+        String index1_s = "" + index1;
+        String index2_s = "" + index2;
+
+        String index12 = index1_s + index2_s;
+        int index12_i_upgraded_by_1 = 0;
+        String isoFormat_end;
+        if (index1_s.equals("0")) {
+            //convert to int and increase by 1
+            int index2_i = Integer.parseInt(index2_s);
+            int index2_upgraded_by_1 = index2_i + 2;
+            isoFormat_end = completeDate + "T0" + index2_upgraded_by_1;
+        } else if (index12.equals("24")) {
+            isoFormat_end = completeDate + "T" + "0100";
+        } else {
+            int index12_i = Integer.parseInt(index1_s + index2_s);
+            index12_i_upgraded_by_1 = index12_i + 1;
+            isoFormat_end = completeDate + "T" + index12_i_upgraded_by_1;
+        }
+        isoFormat_end = isoFormat_end + "000000";
+        return isoFormat_end;
+    }
 }
