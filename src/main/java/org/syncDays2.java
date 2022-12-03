@@ -109,56 +109,64 @@ public class syncDays2 extends TestBase2 {
             System.out.println(games.get(i).getText());
             System.out.println(times.get(i).getText());
 
-            //increase time by 1 hour
-            Date newTime = convertStringToDate(times.get(i).getText());
-            String time_end = add1Hour(newTime, 2);
+
+            //Exclude some games
+            if (games.get(i).getText().contains("פאדל")) {
+                //don't add to games
+            } else {
 
 
-            //trim game name
-            String game_name_trim = games.get(i).getText().replace("'", "").replace("\"", "");
+                //increase time by 1 hour
+                Date newTime = convertStringToDate(times.get(i).getText());
+                String time_end = add1Hour(newTime, 2);
 
 
-            //Convert date to ISO format for web:
-            String isoFormat_start = getIsoFormat_start( pageDateIncreased2, times.get(i).getText());
-            String isoFormat_end = getIsoFormat_end(isoFormat_start);
+                //trim game name
+                String game_name_trim = games.get(i).getText().replace("'", "").replace("\"", "");
 
 
-            //First see if record already saved:
-            try {
-                List<String> id = DBHelperPrivate.executeSelectQuery("SELECT * FROM `u204686394_mishakim`.`games` where game_name = '" + game_name_trim + "' and game_date = '" + pageDateIncreased2 + "' and time = '" + times.get(i).getText() + "'", "id");
-                if (id.size() == 0) {
-                    System.out.println("Record not exists");
+                //Convert date to ISO format for web:
+                String isoFormat_start = getIsoFormat_start(pageDateIncreased2, times.get(i).getText());
+                String isoFormat_end = getIsoFormat_end(isoFormat_start);
 
 
-                    DBHelperPrivate.executeUpdate("INSERT INTO `" + db + "`.`games`" +
-                            "(\n" +
-                            "`game_date`,\n" +
-                            "`cal_start`,\n" +
-                            "`cal_end`,\n" +
-                            "`time`,\n" +
-                            "`channel`,\n" +
-                            "`game_name`,\n" +
-                            "`color`,\n" +
-                            "`day`,\n" +
-                            "`isoFormat_start`,\n" +
-                            "`isoFormat_end`)\n" +
-                            "VALUES\n" +
-                            "(\n" +
-                            "'" + pageDateIncreased2 + "',\n" +
-                            "'" + pageDateIncreased2 + " " + times.get(i).getText() + "',\n" +
-                            "'" + pageDateIncreased2 + " " + time_end + "',\n" +
-                            "'" + times.get(i).getText() + "',\n" +
-                            "'" + channels.get(i).getText() + "',\n" +
-                            "'" + game_name_trim + "',\n" +
-                            "'white',\n" +
-                            "'" + day + "',\n" +
-                            "'" + isoFormat_start + "',\n" +
-                            "'" + isoFormat_end + "');");
+                //First see if record already saved:
+                try {
+                    List<String> id = DBHelperPrivate.executeSelectQuery("SELECT * FROM `u204686394_mishakim`.`games` where game_name = '" + game_name_trim + "' and game_date = '" + pageDateIncreased2 + "' and time = '" + times.get(i).getText() + "'", "id");
+                    if (id.size() == 0) {
+                        System.out.println("Record not exists");
 
+
+                        DBHelperPrivate.executeUpdate("INSERT INTO `" + db + "`.`games`" +
+                                "(\n" +
+                                "`game_date`,\n" +
+                                "`cal_start`,\n" +
+                                "`cal_end`,\n" +
+                                "`time`,\n" +
+                                "`channel`,\n" +
+                                "`game_name`,\n" +
+                                "`color`,\n" +
+                                "`day`,\n" +
+                                "`isoFormat_start`,\n" +
+                                "`isoFormat_end`)\n" +
+                                "VALUES\n" +
+                                "(\n" +
+                                "'" + pageDateIncreased2 + "',\n" +
+                                "'" + pageDateIncreased2 + " " + times.get(i).getText() + "',\n" +
+                                "'" + pageDateIncreased2 + " " + time_end + "',\n" +
+                                "'" + times.get(i).getText() + "',\n" +
+                                "'" + channels.get(i).getText() + "',\n" +
+                                "'" + game_name_trim + "',\n" +
+                                "'white',\n" +
+                                "'" + day + "',\n" +
+                                "'" + isoFormat_start + "',\n" +
+                                "'" + isoFormat_end + "');");
+
+                    }
+                    System.out.println("Record already exists");
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
                 }
-                System.out.println("Record already exists");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         }
     }
