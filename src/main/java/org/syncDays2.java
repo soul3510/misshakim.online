@@ -56,9 +56,6 @@ public class syncDays2 extends TestBase2 {
         String pageDateIncreased2 = add1Day(pageDate2, increaseDayBy, "dd/MM/yyyy");
 
         DBHelperPrivate.mysqlConnect();
-        //Delete all records for this day
-        DBHelperPrivate.executeUpdate("DELETE from `" + db + "`.`games` where game_date = '" + pageDateIncreased2 + "'");
-
 
         //First delete all the past records of last week
         String yesterday = remove1day(pageDate2, "dd/MM/yyyy");
@@ -95,6 +92,11 @@ public class syncDays2 extends TestBase2 {
                 day = "saturday";
                 break;
         }
+
+
+        //Delete all records for this day
+        DBHelperPrivate.executeUpdate("DELETE from `" + db + "`.`games` where day = '" + day + "'");
+
 
 
         List<WebElement> channels = driver.findElements(By.xpath("//div[@id='bigContext']/div[1]/div[" + xpathIndex + "]/div/div[2]")); //Need to remove first object
