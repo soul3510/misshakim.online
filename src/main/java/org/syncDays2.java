@@ -46,7 +46,6 @@ public class syncDays2 extends TestBase2 {
     @Test(dataProvider = "pageIndex")
     public void SyncDays2(int increaseDayBy, String xpathIndex) throws Exception {
 
-
         driver.get("https://www.telesport.co.il/%D7%A9%D7%99%D7%93%D7%95%D7%A8%D7%99%20%D7%A1%D7%A4%D7%95%D7%A8%D7%98");
 
         //First get the day on screen:
@@ -56,8 +55,10 @@ public class syncDays2 extends TestBase2 {
         String pageDate2 = driver.findElement(By.className("current")).getText().replace("/22", "/2022").replace("/23", "2023"); //  01/12/2022
         String pageDateIncreased2 = add1Day(pageDate2, increaseDayBy, "dd/MM/yyyy");
 
-
         DBHelperPrivate.mysqlConnect();
+        //Delete all records for this day
+        DBHelperPrivate.executeUpdate("DELETE from `" + db + "`.`games` where game_date = '" + pageDateIncreased2 + "'");
+
 
         //First delete all the past records of last week
         String yesterday = remove1day(pageDate2, "dd/MM/yyyy");
