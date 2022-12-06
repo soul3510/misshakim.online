@@ -38,7 +38,8 @@ public class syncDays2 extends TestBase2 {
                 {2, "3"},
                 {3, "4"},
                 {4, "5"},
-                {5, "6"}
+                {5, "6"},
+                {6, "7"}
         };
     }
 
