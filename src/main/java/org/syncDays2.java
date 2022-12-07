@@ -2,6 +2,7 @@ package org;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -63,8 +64,12 @@ public class syncDays2 extends TestBase2 {
 
 
         //Click on the date
-        driver.findElement(By.xpath("//*[text()='" + pageDateIncreased1 + "']")).click();
-
+        try {
+            driver.findElement(By.xpath("//*[text()='" + pageDateIncreased1 + "']")).click();
+        }catch (Exception e){
+            System.out.println(pageDateIncreased1 + " wasn't found.");
+            throw new Exception(pageDateIncreased1 + " wasn't found. Opps we have a problem.");
+        }
 
         //day of the week:
         int day_int = getDayNumberOld(pageDateIncreased2, "dd/MM/yyyy");
@@ -103,7 +108,11 @@ public class syncDays2 extends TestBase2 {
         List<WebElement> games = driver.findElements(By.xpath("//div[@id='bigContext']/div[1]/div[" + xpathIndex + "]/div/div[4]"));
         List<WebElement> times = driver.findElements(By.xpath("//div[@id='bigContext']/div[1]/div[" + xpathIndex + "]/div/div[3]")); //Need to remove first object
 
-        channels.remove(0);
+        try {
+            channels.remove(0);
+        }catch (Exception e){
+            throw new Exception("Opps we have a problem. ");
+        }
         times.remove(0);
 
 
