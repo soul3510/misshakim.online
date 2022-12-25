@@ -19,7 +19,8 @@ public class TestBase2 {
 
     //    private static String table = "games";
 //        private static String gridURL = "http://10.162.10.197:4444/";//new computer (IP not static
-    private static final String gridURL = "http://192.168.68.101:4444/"; //old octopai computer
+//    private static final String gridURL = "http://192.168.68.102:4444/"; //old octopai computer
+    private static final String gridURL = "http://localhost:4444/"; //old octopai computer - local host
     //    public static String db = "mishakim"; //LOCAL
     public static String db = "u204686394_mishakim"; //REMOTE
     //    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
