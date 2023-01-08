@@ -2,6 +2,7 @@ package org;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.SkipException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -46,6 +47,7 @@ public class syncDays2 extends TestBase2 {
 
     @Test(dataProvider = "pageIndex")
     public void SyncDays2(int increaseDayBy, String xpathIndex) throws Exception {
+        RemoteWebDriver driver = driverContainer.get();
 
         driver.get("https://www.telesport.co.il/%D7%A9%D7%99%D7%93%D7%95%D7%A8%D7%99%20%D7%A1%D7%A4%D7%95%D7%A8%D7%98");
 
@@ -53,7 +55,7 @@ public class syncDays2 extends TestBase2 {
         String pageDate1 = driver.findElement(By.className("current")).getText(); //  01/12/22
         String pageDateIncreased1 = add1Day(pageDate1, increaseDayBy, "dd/MM/yy");
 
-        String pageDate2 = driver.findElement(By.className("current")).getText().replace("/22", "/2022").replace("/23", "2023"); //  01/12/2022
+        String pageDate2 = pageDate1.replace("/22", "/2022").replace("/23", "/2023"); //  01/12/2022
         String pageDateIncreased2 = add1Day(pageDate2, increaseDayBy, "dd/MM/yyyy");
 
         DBHelperPrivate.mysqlConnect();

@@ -2,6 +2,7 @@ package org;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
@@ -12,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.net.URL;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,8 +26,13 @@ public class TestBase2 {
     //    public static String db = "mishakim"; //LOCAL
     public static String db = "u204686394_mishakim"; //REMOTE
     //    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
-    public static WebDriver driver;
+//    public static WebDriver driver;
 //    private static final String gridURL = "http://10.100.102.17:4444"; //work
+
+    public static String headless;
+    protected static ThreadLocal<RemoteWebDriver> driverContainer = new ThreadLocal<>();
+    protected static boolean ENV_TO_TEST = true;
+
 
 //    @BeforeSuite
 //    public static void deleteDbs() throws Exception {
@@ -33,6 +40,7 @@ public class TestBase2 {
 //            DBHelperPrivate.mysqlConnectDisconnect();
 //
 //    }
+
 
     @BeforeMethod
     public static void createDriver() throws Exception {
@@ -48,24 +56,30 @@ public class TestBase2 {
             /**
              * End of Get read of selenium and chrome logs
              */
+
             ChromeOptions chromeOptions = new ChromeOptions();
 
             chromeOptions.addArguments("--start-maximized");
-            chromeOptions.setCapability("platform", "WINDOWS");
             chromeOptions.addArguments("--log-level=3");
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
-//            chromeOptions.addArguments("--headless");
 
-            LoggingPreferences logPrefs = new LoggingPreferences();
-            logPrefs.enable(LogType.BROWSER, Level.INFO);
-            logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
-//            driver = new ChromeDriver();
-            driver = new RemoteWebDriver(new URL(gridURL), chromeOptions);
-//            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-            driver.manage().window().maximize();
-//            Thread.sleep(3000);
+            if (ENV_TO_TEST){
+//            System.setProperty("webdriver.chrome.driver", userDir + "/src/main/resources/" + config_chromeDriverVersion + "/chromedriver.exe");
+                LoggingPreferences logPrefs = new LoggingPreferences();
+                logPrefs.enable(LogType.BROWSER, Level.INFO);
+                logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
+                driverContainer.set(new ChromeDriver(chromeOptions));
+
+            } else {
+                LoggingPreferences logPrefs = new LoggingPreferences();
+                logPrefs.enable(LogType.BROWSER, Level.INFO);
+                logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
+
+                driverContainer.set(new RemoteWebDriver(new URL(gridURL), chromeOptions));
+            }
+            driverContainer.get().manage().window().maximize();
         } catch (Exception ex) {
             killDriver();
             throw new RuntimeException(ex);
@@ -74,8 +88,8 @@ public class TestBase2 {
 
     @AfterMethod
     public static void killDriver() throws Exception {
-        driver.close();
-        driver.quit();
+        driverContainer.get().close();
+        driverContainer.get().quit();
     }
 
 //    @Test()
