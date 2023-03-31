@@ -64,6 +64,7 @@ public class TestBase2 {
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
+            chromeOptions.addArguments("--remote-allow-origins=*");
 
             if (ENV_TO_TEST){
 //            System.setProperty("webdriver.chrome.driver", userDir + "/src/main/resources/" + config_chromeDriverVersion + "/chromedriver.exe");
@@ -81,7 +82,7 @@ public class TestBase2 {
             }
             driverContainer.get().manage().window().maximize();
         } catch (Exception ex) {
-            killDriver();
+//            killDriver();
             throw new RuntimeException(ex);
         }
     }

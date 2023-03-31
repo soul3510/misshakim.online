@@ -1,21 +1,22 @@
-package org;
+package org.main;
 
+import org.DBHelperPrivate;
+import org.PageLoad;
+import org.TestBase2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.testng.SkipException;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class syncDays2 extends TestBase2 {
+public class macabiHifa extends TestBase2 {
 
     private String completeDate;
 
@@ -36,23 +37,38 @@ public class syncDays2 extends TestBase2 {
     public Object[][] pageIndex() {
         return new Object[][]{
                 {0, "1"},
-                {1, "2"},
-                {2, "3"},
-                {3, "4"},
-                {4, "5"},
-                {5, "6"},
-                {6, "7"}
+//                {1, "2"},
+//                {2, "3"},
+//                {3, "4"},
+//                {4, "5"},
+//                {5, "6"},
+//                {6, "7"}
         };
     }
 
     @Test(dataProvider = "pageIndex")
-    public void SyncDays2(int increaseDayBy, String xpathIndex) throws Exception {
+    public void MacabiHifa(int increaseDayBy, String xpathIndex) throws Exception {
         RemoteWebDriver driver = driverContainer.get();
 
-        driver.get("https://www.telesport.co.il/%D7%A9%D7%99%D7%93%D7%95%D7%A8%D7%99%20%D7%A1%D7%A4%D7%95%D7%A8%D7%98");
+        driver.get("https://mhaifafc.com/historySearch?cYearComp=1948&CompId=2&lang=he&cMode=COMP#results");
+
+        //get number of tr
+        int tr_elements = PageLoad.waitForElementWithActions_list("tr elements", driver, "(//tr[@class='data_row youth'])", "xpath", null, 10).size();
+
+        for (int i=0;i<tr_elements;i++){
+            String framwork = PageLoad.waitForElementWithActions("Framework td", driver, "//tr[@class='data_row youth'][1]//td[1]", "xpath", null, 10).getText();
+            String date = PageLoad.waitForElementWithActions("Framework td", driver, "//tr[@class='data_row youth'][1]//td[1]", "xpath", null, 10).getText();
+            String host = PageLoad.waitForElementWithActions("Framework td", driver, "//tr[@class='data_row youth'][1]//td[1]", "xpath", null, 10).getText();
+            String other_team = PageLoad.waitForElementWithActions("Framework td", driver, "//tr[@class='data_row youth'][1]//td[1]", "xpath", null, 10).getText();
+            String score = PageLoad.waitForElementWithActions("Framework td", driver, "//tr[@class='data_row youth'][1]//td[1]", "xpath", null, 10).getText();
+        }
+
+
+
+
 
         //First get the day on screen:
-        String pageDate1 = driver.findElement(By.className("current")).getText(); //  01/12/22
+        String pageDate1 = driver.findElement(By.className("calendar_text")).getText(); //  01/12/22
         String pageDateIncreased1 = add1Day(pageDate1, increaseDayBy, "dd/MM/yy");
 
         String pageDate2 = pageDate1.replace("/22", "/2022").replace("/23", "/2023"); //  01/12/2022

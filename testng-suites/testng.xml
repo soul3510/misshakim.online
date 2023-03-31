@@ -5,7 +5,7 @@
 
     <test name="Sync Games">
         <classes>
-            <class name="org.syncDays2"></class>
+            <class name="org.main.syncDays2"></class>
         </classes>
     </test>
 
