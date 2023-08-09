@@ -13,6 +13,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,9 +30,8 @@ public class TestBase2 {
 //    public static WebDriver driver;
 //    private static final String gridURL = "http://10.100.102.17:4444"; //work
 
-    public static String headless;
     protected static ThreadLocal<RemoteWebDriver> driverContainer = new ThreadLocal<>();
-    protected static boolean ENV_TO_TEST = true;
+    protected static boolean ENV_TO_TEST = false;
 
 
 //    @BeforeSuite
@@ -58,13 +58,19 @@ public class TestBase2 {
              */
 
             ChromeOptions chromeOptions = new ChromeOptions();
+            HashMap<String, Object> chromePref = new HashMap<>();
 
+
+            chromePref.put("credentials_enable_service", false);
+            chromePref.put("profile.password_manager_enabled", false);
             chromeOptions.addArguments("--start-maximized");
             chromeOptions.addArguments("--log-level=3");
             chromeOptions.addArguments("--silent");
             chromeOptions.addArguments("--no-sandbox");
             chromeOptions.addArguments("--disable-dev-shm-usage");
             chromeOptions.addArguments("--remote-allow-origins=*");
+            chromeOptions.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
+            chromeOptions.setExperimentalOption("prefs", chromePref);
 
             if (ENV_TO_TEST){
 //            System.setProperty("webdriver.chrome.driver", userDir + "/src/main/resources/" + config_chromeDriverVersion + "/chromedriver.exe");
