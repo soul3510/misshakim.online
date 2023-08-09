@@ -31,7 +31,7 @@ public class TestBase2 {
 //    private static final String gridURL = "http://10.100.102.17:4444"; //work
 
     protected static ThreadLocal<RemoteWebDriver> driverContainer = new ThreadLocal<>();
-    protected static boolean ENV_TO_TEST = false;
+    protected static boolean ENV_TO_TEST = true;
 
 
 //    @BeforeSuite
