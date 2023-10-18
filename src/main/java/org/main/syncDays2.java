@@ -69,7 +69,8 @@ public class syncDays2 extends TestBase2 {
 
         //Click on the date
         try {
-            driver.findElement(By.xpath("//*[text()='" + pageDateIncreased1 + "']")).click();
+            driver.findElement(By.linkText(pageDateIncreased1)).click();
+//            driver.findElement(By.xpath("//*[text()='" + pageDateIncreased1 + "']")).click();
         }catch (Exception e){
             System.out.println(pageDateIncreased1 + " wasn't found.");
             throw new Exception(pageDateIncreased1 + " wasn't found. Opps we have a problem.");
