@@ -23,7 +23,8 @@ public class TestBase2 {
     //    private static String table = "games";
 //        private static String gridURL = "http://10.162.10.197:4444/";//new computer (IP not static
 //    private static final String gridURL = "http://192.168.68.102:4444/"; //old octopai computer
-    private static final String gridURL = "http://localhost:4444/"; //old octopai computer - local host
+//    private static final String gridURL = "http://localhost:4444/"; //old octopai computer - local host
+    private static final String gridURL = "http://169.254.217.140:4444/"; //old octopai computer - local host
     //    public static String db = "mishakim"; //LOCAL
     public static String db = "u204686394_mishakim"; //REMOTE
     //    private static String gridURL = "http://192.168.68.115:4444/"; // https://www.gridlastic.com/
@@ -31,7 +32,7 @@ public class TestBase2 {
 //    private static final String gridURL = "http://10.100.102.17:4444"; //work
 
     protected static ThreadLocal<RemoteWebDriver> driverContainer = new ThreadLocal<>();
-    protected static boolean ENV_TO_TEST = true;
+    protected static boolean ENV_TO_TEST = false; //Change to false for local test
 
 
 //    @BeforeSuite
