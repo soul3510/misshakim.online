@@ -1,7 +1,11 @@
 name: mishakim-live.com
 
-on: 
- workflow_dispatch:
+on:
+  schedule:
+    - cron: '0 21 * * 0-6'
+    - cron: '0 09 * * 0-6'
+    - cron: '0 14 * * 0-6'
+  workflow_dispatch:
 
 jobs:
   build:
